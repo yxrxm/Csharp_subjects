@@ -11,5 +11,8 @@ class Program
         Type.Run();
         ClassPrac.Run();
         ClassPrivate.Run();
+        Array.Run();
+        CollectionTest.Run();
+        Except.Run();
     }
 }
