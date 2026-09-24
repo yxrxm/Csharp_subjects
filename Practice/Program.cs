@@ -9,5 +9,7 @@ class Program
         // Repeat.Run();
         Data.Run();
         Type.Run();
+        ClassPrac.Run();
+        ClassPrivate.Run();
     }
 }
