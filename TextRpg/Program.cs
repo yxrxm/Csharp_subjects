@@ -78,9 +78,36 @@ class Program
         Enemy professor = new Enemy("Professor", 80, 20);
 
         Random random = new Random();
-        int idx = random.Next(Enemy.enemies.Count);
+        bool perfectWin = false;
 
-        Battle(player, Enemy.enemies[idx]);
+        while (player.Hp > 0 && !perfectWin)
+        {
+            int idx = random.Next(Enemy.enemies.Count);
+
+            if (Enemy.enemies[idx].Hp > 0)
+            {
+                Battle(player, Enemy.enemies[idx]);
+            }
+
+            perfectWin = true;
+            foreach (Enemy e in Enemy.enemies)
+            {
+                if (e.Hp > 0)
+                {
+                    perfectWin = false;
+                    break;
+                }
+            }
+        }
+
+        if (player.Hp <= 0)
+        {
+            Console.WriteLine("게임 오버! 다시 도전해보세요.");
+        }
+        else if (perfectWin)
+        {
+            Console.WriteLine("모든 적을 쓰러뜨렸습니다! 축하합니다!");
+        }
     }
 
     static void ShowMenu()
@@ -96,8 +123,6 @@ class Program
     static void Battle(Player player, Enemy enemy)
     {   
         Console.WriteLine("야생의 " + enemy.Name + "이 나타났습니다!\n");
-
-        
 
         while (player.Hp > 0 && enemy.Hp > 0)
         {
@@ -132,14 +157,13 @@ class Program
             }
         }
 
-        if (player.Hp > enemy.Hp)
+        if (player.Hp <= 0)
         {
-            Console.WriteLine(player.Name + "님이 승리하셨습니다!");
+            Console.WriteLine(player.Name + "님이 패배했습니다.");
         }
         else
         {
-            Console.WriteLine(enemy.Name + "님이 승리하셨습니다!");
-            Console.WriteLine("다시 도전해보세요.");
+            Console.WriteLine(enemy.Name + "을(를) 쓰러뜨렸습니다!");
         }
     }
 }
