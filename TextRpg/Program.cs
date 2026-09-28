@@ -94,13 +94,27 @@ class Program
 
     // player와 enemy 인스턴스끼리 싸움 붙이기
     static void Battle(Player player, Enemy enemy)
-    {
+    {   
         Console.WriteLine("야생의 " + enemy.Name + "이 나타났습니다!\n");
+
+        
 
         while (player.Hp > 0 && enemy.Hp > 0)
         {
             ShowMenu();
-            int op = int.Parse(Console.ReadLine()!);
+            string? input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int op))
+            {
+                Console.WriteLine("숫자를 입력해주세요.");
+                continue;
+            }
+
+            if (op != 1 && op != 2)
+            {
+                Console.WriteLine("1 또는 2를 입력해주세요.");
+                continue;
+            }
 
             if (op == 1)
             {
@@ -109,11 +123,6 @@ class Program
             else if (op == 2)
             {
                 player.ShowStatus();
-                continue;
-            }
-            else
-            {
-                Console.WriteLine("잘못 입력하셨습니다. 다시 입력해주세요.\n");
                 continue;
             }
 
