@@ -1,4 +1,8 @@
-﻿// 플레이어와 적이 함께 사용하는 상태와 행동 정의하는 Character 클래스
+﻿/*
+gpt 활용: List 사용법
+*/
+
+// 플레이어와 적이 함께 사용하는 상태와 행동 정의하는 Character 클래스
 class Character
 {
     public string Name;
@@ -19,8 +23,11 @@ class Character
         Console.WriteLine(this.Name + "의 공격!");
         Console.WriteLine(target.Name + "에게 " + this.AttackPower + "의 데미지!\n");
 
-        Console.WriteLine(target.Name + " HP : " + target.Hp);
-        Console.WriteLine();
+        if (target.Hp > 0)
+        {
+            Console.WriteLine(target.Name + " HP : " + target.Hp);
+            Console.WriteLine();
+        }
     }
 
     // 이름, HP, 공격력 출력하기
@@ -47,27 +54,38 @@ class Enemy : Character
     public Enemy(string name, int hp, int attackPower)
         : base(name, hp, attackPower)
     {
+        enemies.Add(this);
     }
+
+    // 여러 Enemy들을 저장하는 List
+    public static List<Enemy> enemies = new List<Enemy>();
 }
 
 class Program
 {
     public static void Main(string[] args)
     {
-        // 예제 조건 충족만 하게끔 우선 구현
         Console.WriteLine("=== Text RPG ===");
 
         Console.Write("플레이어 이름을 입력하세요: ");
         string name = Console.ReadLine()!;
 
-        Player player1 = new Player(name, 100, 10); // 우선 초기 능력 100, 10로 고정
-        Enemy slime = new Enemy("Slime", 40, 8); // 우선 초기 능력 40, 8로 고정
-        Battle(player1, slime);
+        Player player = new Player(name, 100, 10); // 우선 player 초기 능력 100, 10로 고정
+
+        // 적들 생성 -> 랜덤으로 적 선택되도록 구현
+        Enemy slime = new Enemy("Slime", 40, 8);
+        Enemy devil = new Enemy("Devil", 60, 10);
+        Enemy professor = new Enemy("Professor", 80, 20);
+
+        Random random = new Random();
+        int idx = random.Next(Enemy.enemies.Count);
+
+        Battle(player, Enemy.enemies[idx]);
     }
 
     static void ShowMenu()
     {
-        // TODO: 공격 / 상태 확인 메뉴 출력하기
+        // 공격 / 상태 확인 메뉴 출력하기
         Console.WriteLine("1. 공격");
         Console.WriteLine("2. 상태확인\n");
 
@@ -95,6 +113,7 @@ class Program
             }
             else
             {
+                Console.WriteLine("잘못 입력하셨습니다. 다시 입력해주세요.\n");
                 continue;
             }
 
